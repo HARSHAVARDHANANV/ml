@@ -1,0 +1,290 @@
+Experiment 1(a)
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("diabetes.csv")
+
+# Display first 5 rows
+print(df.head())
+
+# Dataset information
+df.info()
+
+# Check null values
+print(df.isnull().sum())
+
+# Normalization
+minmax = MinMaxScaler()
+normalized_data = minmax.fit_transform(df)
+
+print("Normalized Data")
+print(normalized_data[:5])
+
+# Standardization
+standard = StandardScaler()
+standardized_data = standard.fit_transform(df)
+
+print("Standardized Data")
+print(standardized_data[:5])
+
+Experiment 1(b)
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.datasets import load_iris
+
+# Load iris dataset
+iris = load_iris()
+
+# Create dataframe
+data = pd.DataFrame(iris.data, columns=iris.feature_names)
+data['target'] = iris.target
+
+# Define variables
+y = data['sepal length (cm)']
+X_uni = data[['petal length (cm)']]
+
+# Create model
+model_uni = LinearRegression()
+
+# Train model
+model_uni.fit(X_uni, y)
+
+# Predict values
+y_pred_uni = model_uni.predict(X_uni)
+
+# Calculate R2 score
+r2_uni = r2_score(y, y_pred_uni)
+
+print("R2 Score:", r2_uni)
+
+# Plot graph
+plt.figure()
+plt.scatter(X_uni, y, color='blue', label='Actual Data')
+plt.plot(X_uni, y_pred_uni, color='red', label='Regression Line')
+
+plt.xlabel('Petal Length (cm)')
+plt.ylabel('Sepal Length (cm)')
+plt.title('Univariate Regression')
+
+plt.legend()
+plt.show()
+
+experiment 2
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+# Sample data
+x = np.array([1,2,3,4,5]).reshape(-1,1)
+y = np.array([2,4,5,4,5])
+
+# Train model
+model = LinearRegression()
+model.fit(x, y)
+
+# Predict value
+y_pred = model.predict(x)
+
+print("Slope:", model.coef_[0])
+print("Intercept:", model.intercept_)
+print("Predicted y for x=6:", model.predict([[6]])[0])
+
+# Graph
+plt.scatter(x, y)
+plt.plot(x, y_pred, color='red')
+
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Linear Regression")
+plt.show()
+
+
+experiment 3
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sigmoid function
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+# Sample data
+x = np.array([1,2,3,4,5])
+y = np.array([0,0,1,1,1])
+
+# Simple logistic model
+a, b = -4, 1.5
+
+# Prediction
+x_new = 6
+prob = sigmoid(a + b * x_new)
+
+print("Predicted Probability:", prob)
+
+# Plot
+x_vals = np.linspace(0,7,100)
+y_vals = sigmoid(a + b * x_vals)
+
+plt.scatter(x, y)
+plt.plot(x_vals, y_vals)
+plt.xlabel("X")
+plt.ylabel("Probability")
+plt.title("Logistic Regression")
+plt.grid(True)
+plt.show()
+
+experiment 4
+import numpy as np
+
+# Step function
+def step(x):
+    return 1 if x >= 0 else 0
+
+# Input and output
+X = np.array([[0,0],[0,1],[1,0],[1,1]])
+y = np.array([0,0,0,1])
+
+# Weights and bias
+w = np.array([1,1])
+b = -1.5
+
+# Prediction
+for x in X:
+    output = step(np.dot(x, w) + b)
+    print(x, "->", output)
+
+
+Experiment 5 Artificial Neural Network (ANN) using Python for XOR logic prediction
+
+import numpy as np
+
+# Sigmoid function
+def sigmoid(x):
+    return 1/(1+np.exp(-x))
+
+# Input and output
+X = np.array([[0,0],[0,1],[1,0],[1,1]])
+y = np.array([[0],[1],[1],[0]])
+
+# Random weights
+np.random.seed(1)
+W = np.random.rand(2,1)
+
+# Training
+for i in range(10000):
+    output = sigmoid(np.dot(X, W))
+    error = y - output
+    W += np.dot(X.T, error * output * (1-output)) * 0.1
+
+# Output
+print("Predicted Output:")
+print(output)
+
+
+
+Experiment 6 Support Vector Machine (SVM)
+
+import numpy as np
+from sklearn.svm import SVC
+
+# Data
+X = np.array([[3,1],[3,-1],[6,1],[6,-1],[1,0],[0,1],[0,-1],[-1,0]])
+y = np.array([1,1,1,1,-1,-1,-1,-1])
+
+# Train SVM model
+model = SVC(kernel='linear')
+model.fit(X,y)
+
+# Prediction
+print("Predicted Output:")
+print(model.predict(X))
+
+
+Experiment 7 Decision Tree Classifier
+
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+
+# Data
+data = {'Age':[25,30,45,35],
+        'Salary':[50000,60000,80000,65000],
+        'Purchased':[0,1,1,0]}
+
+df = pd.DataFrame(data)
+
+X = df[['Age','Salary']]
+y = df['Purchased']
+
+# Train model
+model = DecisionTreeClassifier()
+model.fit(X,y)
+
+# Prediction
+print("Output:", model.predict(X))
+
+Experiment 8 AdaBoost Classifier
+
+import numpy as np
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.preprocessing import LabelEncoder
+
+# Data
+X = np.array([['Yes','Good'],['No','Good'],['Yes','Average'],['No','Average']])
+y = np.array(['Yes','Yes','No','No'])
+
+# Encoding
+le = LabelEncoder()
+X = np.array([[le.fit_transform(col) for col in X.T]]).reshape(4,2)
+y = le.fit_transform(y)
+
+# Train model
+model = AdaBoostClassifier(n_estimators=5)
+model.fit(X,y)
+
+# Prediction
+print("Output:", model.predict(X))
+
+Experiment 9 – KNN
+
+import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+
+# Data
+X = np.array([[1,2],[2,3],[3,4],[6,7],[7,8],[8,9]])
+y = np.array([0,0,0,1,1,1])
+
+# Train model
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X,y)
+
+# Prediction
+print(model.predict([[5,5],[2,2]]))
+
+
+
+experiment 10 – PCA (Principal Component Analysis)
+Aim
+import numpy as np
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# Data
+X = np.array([[2.5,2.4],[0.5,0.7],[2.2,2.9],[1.9,2.2]])
+
+# Standardize
+X = StandardScaler().fit_transform(X)
+
+# PCA
+pca = PCA(n_components=1)
+result = pca.fit_transform(X)
+
+print("PCA Output:")
+print(result)
